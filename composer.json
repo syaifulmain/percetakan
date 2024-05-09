@@ -1,0 +1,25 @@
+{
+  "name": "saep/percetakan-mvc",
+  "description": "percetakan",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Muhamad Syaifullah",
+      "email": "muhamadsyaifullah166333@gmail.com"
+    }
+  ],
+  "require": {
+    "php" : ">=8",
+    "monolog/monolog": ">=3.6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Saep\\Percetakan\\" : "app"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Saep\\Percetakan\\" : "app"
+    }
+  }
+}
