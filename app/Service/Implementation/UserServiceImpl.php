@@ -7,18 +7,27 @@ use Saep\Percetakan\Domain\User;
 use Saep\Percetakan\Exception\ValidationException;
 use Saep\Percetakan\Model\User\UserCreateRequest;
 use Saep\Percetakan\Model\User\UserCreateResponse;
+use Saep\Percetakan\Model\User\UserGetNameRole;
 use Saep\Percetakan\Model\User\UserLoginRequest;
 use Saep\Percetakan\Model\User\UserLoginResponse;
+use Saep\Percetakan\Repository\KaryawanRepository;
 use Saep\Percetakan\Repository\UserRepository;
+use Saep\Percetakan\Service\SessionService;
 use Saep\Percetakan\Service\UserService;
 
 class UserServiceImpl implements UserService
 {
     private UserRepository $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    private SessionService $sessionService;
+
+    private KaryawanRepository $karyawanRepository;
+
+    public function __construct(UserRepository $userRepository, SessionService $sessionService, ?KaryawanRepository $karyawanRepository)
     {
         $this->userRepository = $userRepository;
+        $this->sessionService = $sessionService;
+        $this->karyawanRepository = $karyawanRepository;
     }
 
     public function create(UserCreateRequest $request): UserCreateResponse
@@ -82,5 +91,23 @@ class UserServiceImpl implements UserService
             trim($request->username) == "" || trim($request->password) == "") {
             throw new ValidationException("username dan password tidak boleh kosong");
         }
+    }
+
+    public function getUserInformation(): UserGetNameRole
+    {
+        $user = $this->sessionService->current();
+        if ($user == null) {
+            throw new ValidationException("User not found");
+        }
+        $response = new UserGetNameRole();
+        if ($user->role == 'admin')
+        {
+            $response->nama = $user->username;
+            $response->role = $user->role;
+        } else {
+            $response->nama = $this->karyawanRepository->getNamaByUsername($user->username);
+            $response->role = $user->role;
+        }
+        return $response;
     }
 }

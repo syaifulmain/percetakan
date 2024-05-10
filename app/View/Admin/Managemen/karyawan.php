@@ -7,8 +7,8 @@
                         <div class="d-grid gap-2 d-md-flex">
                             <div style="width: 50px; height: 50px; background-color: #0a53be"></div>
                             <div class="col">
-                                <p class="m-0 fw-bolder">Nama Karyawan</p>
-                                <p class="m-0">Admin</p>
+                                <p class="m-0 fw-bolder"><?php echo $model['infoUser']->nama ?? '' ?></p>
+                                <p class="m-0"><?php echo $model['infoUser']->role ?? '' ?></p>
                             </div>
                         </div>
                     </div>
@@ -22,7 +22,9 @@
                                tabindex="-1" role="button" aria-disabled="true" style="width: 160px;">Restok</a>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col justify-content-end d-md-flex">
+                        <a href="/logout" class="btn btn-danger fw-medium btn-lg"
+                           tabindex="-1" role="button" aria-disabled="true" style="width: 100px;">Logout</a>
                     </div>
                 </div>
             </div>
@@ -30,7 +32,7 @@
                 <div class="mb-4">
                     <div class="row">
                         <div class="btn-group btn-group-lg d-grid d-md-flex mb-2">
-                            <a href="barang" class="btn btn-outline-success fw-medium btn-lg"
+                            <a href="barang" class="btn btn-outline-success fw-medium btn-lg "
                                tabindex="-1" role="button" aria-disabled="true">Barang</a>
                             <a href="jasa" class="btn btn-outline-success fw-medium btn-lg"
                                tabindex="-1" role="button" aria-disabled="true">Jasa</a>
@@ -40,56 +42,8 @@
                     </div>
                     <div class="d-grid">
                         <button type="button" class="btn btn-success fw-medium btn-lg" data-bs-toggle="modal"
-                                data-bs-target="#tambah" data-bs-whatever="@mdo">Tambah
+                                data-bs-target="#CRUD" onclick="displayCRUDButtonK('Karyawan', 'Tambah')">Tambah
                         </button>
-
-                        <div class="modal fade" id="tambah" tabindex="-1" aria-labelledby="exampleModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content p-4">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form>
-                                            <div class="form-floating mb-4">
-                                                <input type="text" class="form-control" id="username"
-                                                       placeholder="Masukan username">
-                                                <label for="username">Username</label>
-                                            </div>
-                                            <div class="form-floating mb-4">
-                                                <input type="text" class="form-control" id="nama"
-                                                       placeholder="Masukan Nama">
-                                                <label for="nama">Nama</label>
-                                            </div>
-                                            <div class="form-floating mb-4">
-                                                <input type="text" class="form-control" id="telp"
-                                                       placeholder="Masukan No Telepon">
-                                                <label for="telp">No Telepon</label>
-                                            </div>
-                                            <div class="form-floating mb-4">
-                                                <input type="text" class="form-control" id="alamat"
-                                                       placeholder="Masukan Alamat">
-                                                <label for="alamat">Alamat</label>
-                                            </div>
-                                            <div class="form-floating">
-                                                <select class="form-select" id="shift" aria-label="shift">
-                                                    <option selected>Pilih Shift</option>
-                                                    <option value="1">Pagi</option>
-                                                    <option value="2">Malam</option>
-                                                </select>
-                                                <label for="shift">Shift</label>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-success w-100 btn-lg">Simpan</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="col flex-fill">
@@ -97,91 +51,120 @@
                         <thead>
                         <tr>
                             <th scope="col" class="bg-success text-white fw-medium col-1">No</th>
-                            <th scope="col" class="bg-success text-white fw-medium col-3">Username</th>
+                            <th scope="col" class="bg-success text-white fw-medium col-4">Username</th>
                             <th scope="col" class="bg-success text-white fw-medium col-4">Nama</th>
-                            <th scope="col" class="bg-success text-white fw-medium col-2">No Telepon</th>
-                            <th scope="col" class="bg-success text-white fw-medium col-2">Shift</th>
+                            <th scope="col" class="bg-success text-white fw-medium col-2">Alamat</th>
+                            <th scope="col" class="bg-success text-white fw-medium col-1">No Telepon</th>
                             <th scope="col" class="bg-success text-white fw-medium col-1"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>08123456789</td>
-                            <td>Pagi</td>
-                            <td>
-                                <button type="button" class="btn btn-primary fw-medium btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#edit" data-bs-whatever="@mdo">Edit
-                                </button>
-
-                                <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editLabel"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content p-4">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="editLabel">Edit</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form>
-                                                    <div class="form-floating mb-4">
-                                                        <input type="text" class="form-control" id="username-u"
-                                                               placeholder="Masukan username">
-                                                        <label for="username-u">Username</label>
-                                                    </div>
-                                                    <div class="form-floating mb-4">
-                                                        <input type="text" class="form-control" id="nama-u"
-                                                               placeholder="Masukan Nama">
-                                                        <label for="nama-u">Nama</label>
-                                                    </div>
-                                                    <div class="form-floating mb-4">
-                                                        <input type="text" class="form-control" id="telp-u"
-                                                               placeholder="Masukan No Telepon">
-                                                        <label for="telp-u">No Telepon</label>
-                                                    </div>
-                                                    <div class="form-floating mb-4">
-                                                        <input type="text" class="form-control" id="alamat-u"
-                                                               placeholder="Masukan Alamat">
-                                                        <label for="alamat-u">Alamat</label>
-                                                    </div>
-                                                    <div class="form-floating">
-                                                        <select class="form-select" id="shift-u" aria-label="shift">
-                                                            <option selected>Pilih Shift</option>
-                                                            <option value="1">Pagi</option>
-                                                            <option value="2">Malam</option>
-                                                        </select>
-                                                        <label for="shift-u">Shift</label>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-success w-100 btn-lg">Konfirmasi
-                                                </button>
-                                                <button type="button" class="btn btn-danger w-100 btn-lg">Hapus</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                        <?php
+                        $no = 1 + ($model['halaman'] - 1) * 10;
+                        foreach ($model['listKaryawan'] as $karyawan) { ?>
+                            <tr>
+                                <td><?= $no++ ?></td>
+                                <td><?= $karyawan->username ?></td>
+                                <td><?= $karyawan->nama ?></td>
+                                <td><?= $karyawan->alamat ?></td>
+                                <td><?= $karyawan->noTelp ?></td>
+                                <td>
+                                    <button type="button" class="btn btn-primary fw-medium btn-sm"
+                                            data-bs-toggle="modal" data-bs-target="#CRUD"
+                                            onclick="displayCRUDButtonK('Barang', 'Edit', '<?php echo $karyawan->username ?>', '<?php echo $karyawan->nama ?>', '<?php echo $karyawan->alamat ?>', '<?php echo $karyawan->noTelp ?>')">
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php } ?>
                         </tbody>
                     </table>
                 </div>
-                <div class="justify-content-around w-100 d-md-flex">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination m-0">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                <?php if ($model['totalPage'] > 1 !== null) { ?>
+                    <?php
+                    $totalHalaman = $model['totalPage'];
+                    $halaman = $model['halaman'];
+                    $previous = $halaman - 1;
+                    $next = $halaman + 1;
+                    ?>
+                    <nav>
+                        <ul class=" pagination justify-content-center m-0">
+                            <li class="page-item">
+                                <a class="page-link
+                                <?php echo ($halaman > 1) ? "" : " disabled"; ?>"
+                                    <?php echo "href='?halaman=$previous'"; ?>>Previous</a>
+                            </li>
+                            <?php
+                            if ($totalHalaman > 1)
+                                for ($x = 1; $x <= $totalHalaman; $x++) { ?>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
+                                <?php } ?>
+                            <li class="page-item">
+                                <a class="page-link
+                                <?php echo ($halaman < $totalHalaman) ? "" : " disabled"; ?>"
+                                    <?php echo "href='?halaman=$next'"; ?>>Next</a>
+                            </li>
                         </ul>
                     </nav>
-                </div>
+                <?php } ?>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CRUD" tabindex="-1" aria-labelledby="popUp"
+     aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="popUp">
+                    <span id="actionLabel">action</span>
+                    <span id="jenisLabel">jenis</span>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close" onclick="resetForm()"></button>
+            </div>
+            <form method="post" action="/dashboard/managemen/karyawan" id="forminput">
+                <div class="modal-body">
+                    <div class="form-floating mb-4">
+                        <input name="username" type="text" class="form-control" id="username"
+                               placeholder="Masukan username" required>
+                        <label for="username">username</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input name="nama" type="text" class="form-control" id="nama"
+                               placeholder="Masukan Nama" required>
+                        <label for="nama">Nama</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input name="alamat" type="text" class="form-control" id="alamat"
+                               placeholder="Masukan Stok">
+                        <label for="alamat">Alamat</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input name="noTelp" type="text" class="form-control" id="noTelp"
+                               placeholder="Masukan no telp">
+                        <label for="noTelp">No Telepon</label>
+                    </div>
+                    <div class="form-floating mb-4 hidden">
+                        <input name="jenis" type="text" class="form-control" id="jenis"
+                               placeholder="Masukan Stok">
+                        <label for="jenis">jenis</label>
+                    </div>
+                    <div class="form-floating mb-4 hidden">
+                        <input name="action" type="text" class="form-control" id="action"
+                               placeholder="Masukan Stok">
+                        <label for="action">Action</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success w-100 btn-lg" id="saveButton">Simpan</button>
+                    <button type="submit" class="btn btn-success w-100 btn-lg" id="confirmButton">Konfirmasi</button>
+                    <a type="button" class="btn btn-danger w-100 btn-lg" id="deleteButton">Hapus</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>

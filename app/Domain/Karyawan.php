@@ -9,5 +9,4 @@ class Karyawan
     public string $nama;
     public string $alamat;
     public string $noTelp;
-
 }

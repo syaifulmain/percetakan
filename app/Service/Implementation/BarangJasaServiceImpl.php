@@ -101,7 +101,7 @@ class BarangJasaServiceImpl implements BarangJasaService
                 throw new ValidationException("Barang Jasa dengan kode " . $kode . " tidak ditemukan");
             }
 
-            $this->barangJasaRepository->delet($kode);
+            $this->barangJasaRepository->delete($kode);
 
             Database::commitTransaction();
             return true;

@@ -7,8 +7,8 @@
                         <div class="d-grid gap-2 d-md-flex">
                             <div style="width: 50px; height: 50px; background-color: #0a53be"></div>
                             <div class="col">
-                                <p class="m-0 fw-bolder">Nama Karyawan</p>
-                                <p class="m-0">Admin</p>
+                                <p class="m-0 fw-bolder"><?php echo $model['infoUser']->nama ?? '' ?></p>
+                                <p class="m-0"><?php echo $model['infoUser']->role ?? '' ?></p>
                             </div>
                         </div>
                     </div>
@@ -22,7 +22,9 @@
                                tabindex="-1" role="button" aria-disabled="true" style="width: 160px;">Restok</a>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col justify-content-end d-md-flex">
+                        <a href="/logout" class="btn btn-danger fw-medium btn-lg"
+                           tabindex="-1" role="button" aria-disabled="true" style="width: 100px;">Logout</a>
                     </div>
                 </div>
             </div>

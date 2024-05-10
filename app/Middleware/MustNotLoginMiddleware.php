@@ -25,11 +25,9 @@ class MustNotLoginMiddleware implements Middleware
         $user = $this->sessionService->current();
         if ($user != null) {
             if ($user->role == "admin") {
-                View::redirect('/dashboard/managemen/barang', [
-                ]);
+                View::redirect('/dashboard/managemen/barang');
             } else {
-                View::render('/dashboard/kasir', [
-                ]);
+                View::redirect('/dashboard/kasir');
             }
         }
     }

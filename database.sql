@@ -42,3 +42,8 @@ create table karyawan(
 
 ALTER TABLE karyawan
     ADD FOREIGN KEY fk_karyawan_users (username) REFERENCES users (username);
+
+ALTER TABLE users
+    ADD role ENUM ('admin', 'karyawan') DEFAULT 'karyawan';
+
+delete from karyawan;

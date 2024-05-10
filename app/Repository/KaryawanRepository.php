@@ -2,8 +2,12 @@
 
 namespace Saep\Percetakan\Repository;
 
+use Saep\Percetakan\Domain\Karyawan;
+
 interface KaryawanRepository
 {
+    function getNamaByUsername(string $username): ?string;
+
     function save(Karyawan $karyawan): void;
 
     function update(Karyawan $karyawan): void;
