@@ -14,5 +14,5 @@ interface KaryawanService
 
     function update(KaryawanRequest $request): bool;
 
-    function delete(string $kode): bool;
+    function delete(string $kode): void;
 }

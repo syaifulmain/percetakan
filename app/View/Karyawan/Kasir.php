@@ -75,10 +75,11 @@
                             <div class="col">
                                 <select id="select-state" placeholder="Cari Barang" class="my-form-control">
                                     <option value="">Select a state...</option>
-                                    <option value="K0001 Bolpen 100000 5" id="Bolpen">K0001/Bolpen</option>
-                                    <option value="K0002 Pensil 50000 5" id="Pensil">K0002/Pensil</option>
-                                    <option value="K0003 Penghapus 20000 5" id="Penghapus">K0003/Penghapus</option>
-                                    <option value="K0004 Penggaris 10000 5" id="Penggaris">K0004/Penggaris</option>
+                                    <?php
+                                    foreach ($model['list'] as $barang) { ?>
+                                        //echo kodebarang+namabarang+harga+qty in value split by space
+                                        <option value="<?php echo $barang->kode . '/' . $barang->nama . '/' . $barang->harga . '/' . $barang->stok ?>"><?php echo $barang->kode . '/' . $barang->nama ?></option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -155,16 +156,14 @@
                                disabled>
                     </div>
                 </div>
-                <form method="post" action="" id="forminput">
-                    <div class="col d-grid gap-3">
-                        <label for="totalbayarfinal">Pembayaran</label>
-                        <div class="input-group input-group-lg">
-                            <span class="input-group-text">Rp. </span>
-                            <input name="totalbayarfinal" type="number" class="form-control" id="totalbayarfinal"
-                                   placeholder="Masukan Jumlah bayar" required>
-                        </div>
+                <div class="col d-grid gap-3">
+                    <label for="totalbayarfinal">Pembayaran</label>
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text">Rp. </span>
+                        <input name="totalbayarfinal" type="number" class="form-control" id="totalbayarfinal"
+                               placeholder="Masukan Jumlah bayar" required>
                     </div>
-                </form>
+                </div>
                 <div class="col d-grid gap-3">
                     <label for="totalkembalianfinal">Kembalian</label>
                     <div class="input-group input-group-lg">
@@ -175,8 +174,217 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success w-100 btn-lg" id="selesaikan" form="forminput">Selesaikan</button>
+                <a type="submit" class="btn btn-success w-100 btn-lg" id="selesaikan" href="/"
+                        onclick="postTableData()">Selesaikan
+                </a>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $('#select-state').selectize({
+        onChange: function (value) {
+            let data = value.split('/');
+            $('#nama').val(data[1]);
+            $('#harga').val(data[2]);
+            $('#jumlah').attr('max', data[3]);
+            $('#jumlah').attr('min', 1);
+            $('#jumlah').val(1);
+        }
+    });
+
+    $('#jumlah').on('change', function () {
+        let qty = $('#jumlah').val();
+        let max = $('#jumlah').attr('max');
+        if (qty < 1) {
+            $('#jumlah').val(1);
+        } else if (qty > max) {
+            $('#jumlah').val(max);
+        }
+    });
+
+    $('#totalbayarfinal').on('change', function () {
+        let totalbayar = $('#totalbayarfinal').val();
+        let totalpembelian = $('#totalpembelianfinal').val();
+        let kembalian = totalbayar - totalpembelian;
+        if (kembalian < 0) {
+            $('#totalkembalianfinal').val(0);
+        } else {
+            $('#totalkembalianfinal').val(kembalian);
+        }
+    });
+
+    $('#submit').on('click', function (e) {
+        let nama = $('#nama').val();
+        let harga = $('#harga').val();
+        let qty = $('#jumlah').val();
+        if (nama === '' || harga === '' || qty === '') {
+            e.preventDefault();
+            alert('Data tidak lengkap');
+        } else {
+            submit();
+        }
+    });
+
+    $('#selesaikan').on('click', function (e) {
+        let totalbayar = $('#totalbayarfinal').val();
+        let totalpembelian = $('#totalpembelianfinal').val();
+        if (totalbayar < totalpembelian) {
+            e.preventDefault();
+            alert('Pembayaran tidak cukup');
+        } else{
+
+        }
+    });
+
+    $(document).ready(function () {
+        let date = new Date();
+        let notransaksi = date.getTime();
+        let tanggal = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        $('#notransaksi').val(notransaksi);
+        $('#tanggal').val(tanggal);
+    });
+
+    let tableDataArray = []; // kode, nama, harga, qty
+
+    function postTableData() {
+        let namapelanggan = $('#namapelanggan').val();
+        let notelp = $('#notelp').val();
+        let notransaksi = $('#notransaksi').val();
+        let tanggal = $('#tanggal').val();
+        let totalpembelian = $('#totalpembelianfinal').val();
+        let totalbayar = $('#totalbayarfinal').val();
+        let totalkembalian = $('#totalkembalianfinal').val();
+        let dataArray = {
+            namapelanggan: namapelanggan,
+            notelp: notelp,
+            notransaksi: notransaksi,
+            tanggal: tanggal,
+            totalpembelian: totalpembelian,
+            totalbayar: totalbayar,
+            totalkembalian: totalkembalian,
+            data: tableDataArray
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/dashboard/kasir/post",
+            data: JSON.stringify(dataArray),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            },
+            failure: function (errMsg) {
+                console.log(errMsg);
+            }
+        });
+    }
+
+    let cells = [];
+
+    // add row adn data to table after submit button clicked
+    // if same product already in table, update qty and total
+    function addRow() {
+        let kode = $('#select-state').val().split('/')[0];
+        let nama = $('#nama').val();
+        let harga = $('#harga').val();
+        let qty = $('#jumlah').val();
+        let total = harga * qty;
+        let table = document.querySelector('table');
+        let rows = table.rows;
+        let isExist = false;
+        for (let i = 1; i < rows.length; i++) {
+            if (rows[i].cells[1].innerText === nama) {
+                let currentQty = parseInt(rows[i].cells[3].innerText);
+                let newQty = currentQty + parseInt(qty);
+                rows[i].cells[3].innerText = newQty;
+                rows[i].cells[4].innerText = harga * newQty;
+                tableDataArray[i - 1].qty = newQty;
+                tableDataArray[i - 1].total = harga * newQty;
+                isExist = true;
+                break;
+            }
+        }
+        if (!isExist) {
+            tableDataArray.push({kode: kode, nama: nama, harga: parseInt(harga), qty: parseInt(qty), total: total});
+            let row = table.insertRow(-1);
+            cells = [];
+            for (let j = 0; j < 6; j++) {
+                cells.push(row.insertCell(j));
+            }
+            cells[0].innerText = rows.length - 1;
+            cells[1].innerText = nama;
+            cells[2].innerText = harga;
+            cells[3].innerText = qty;
+            cells[4].innerText = total;
+            cells[5].innerHTML = '<button type="button" class="btn btn-danger fw-medium btn-sm" onclick="deleteRow(this)">Hapus</button>';
+        }
+    }
+
+    //laod data table with tableDataArray
+    function loadData() {
+        let table = document.querySelector('table');
+        for (let i = 0; i < tableDataArray.length; i++) {
+            let row = table.insertRow(-1);
+            let cells = [];
+            for (let j = 0; j < 6; j++) {
+                cells.push(row.insertCell(j));
+            }
+            cells[0].innerText = i + 1;
+            cells[1].innerText = tableDataArray[i].nama;
+            cells[2].innerText = tableDataArray[i].harga;
+            cells[3].innerText = tableDataArray[i].qty;
+            cells[4].innerText = tableDataArray[i].total;
+            cells[5].innerHTML = '<button type="button" class="btn btn-danger fw-medium btn-sm" onclick="deleteRow(this)">Hapus</button>';
+        }
+    }
+
+    function deleteRow(r) {
+        let i = r.parentNode.parentNode.rowIndex;
+        document.querySelector('table').deleteRow(i);
+        tableDataArray.splice(i - 1, 1);
+        let table = document.querySelector('table');
+        let rows = table.rows;
+        for (let i = 1; i < rows.length; i++) {
+            rows[i].cells[0].innerText = i;
+        }
+        sumTotal();
+        updateCheckoutButton();
+    }
+
+    function sumTotal() {
+        let total = 0;
+        let table = document.querySelector('table');
+        let rows = table.rows;
+        for (let i = 1; i < rows.length; i++) {
+            total += parseInt(rows[i].cells[4].innerText);
+        }
+        document.getElementById('totalpembelian').innerText = total;
+        document.getElementById('totalpembelianfinal').value = total;
+    }
+
+    function submit() {
+        addRow();
+        sumTotal();
+        resetInput();
+        updateCheckoutButton();
+    }
+
+    function resetInput() {
+        $('#select-state')[0].selectize.clear();
+        $('#nama').val('');
+        $('#harga').val('');
+        $('#jumlah').val('');
+    }
+
+    function updateCheckoutButton() {
+        let total = parseInt($('#totalpembelian').text());
+        if (total > 0) {
+            $('#checkoutbutton').prop('disabled', false);
+        } else {
+            $('#checkoutbutton').prop('disabled', true);
+        }
+    }
+
+</script>

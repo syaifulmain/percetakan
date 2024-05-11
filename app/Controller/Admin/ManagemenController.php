@@ -5,6 +5,7 @@ namespace Saep\Percetakan\Controller\Admin;
 use Saep\Percetakan\App\View;
 use Saep\Percetakan\Config\Database;
 use Saep\Percetakan\Exception\ValidationException;
+use Saep\Percetakan\Model\BarangJasa\BarangJasaRequest;
 use Saep\Percetakan\Model\Karyawan\KaryawanRequest;
 use Saep\Percetakan\Repository\Implementation\BarangJasaRepositoryImpl;
 use Saep\Percetakan\Repository\Implementation\KaryawanRepositoryImpl;
@@ -59,7 +60,7 @@ class ManagemenController
             $action = $_POST['action'];
             $jenis = $_POST['jenis'];
 
-            $request = new KaryawanRequest();
+            $request = new BarangJasaRequest();
             $request->kode = $_POST['kode'];
             $request->nama = $_POST['nama'];
             $request->jenis = $jenis;
@@ -154,7 +155,7 @@ class ManagemenController
     {
         try {
             $kode = $_GET['kode'];
-            $reponse = $this->karyawanService->delete($kode);
+            $this->karyawanService->delete($kode);
             View::redirect('/dashboard/managemen/karyawan');
         } catch (ValidationException $exception) {
             View::render("Admin/Managemen/karyawan", [

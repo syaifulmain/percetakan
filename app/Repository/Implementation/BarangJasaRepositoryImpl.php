@@ -90,4 +90,25 @@ class BarangJasaRepositoryImpl implements BarangJasaRepository
         $statement = $this->connection->prepare("DELETE FROM barang_jasa WHERE kode = ?");
         $statement->execute([$kode]);
     }
+
+    function getAll(): array
+    {
+        // harga > 0 stok > 0
+        $statement = $this->connection->prepare("SELECT * FROM barang_jasa WHERE harga > 0 AND stok > 0");
+        $statement->execute();
+
+        $result = [];
+        while ($row = $statement->fetch()) {
+            $barangJasa = $this->getBarangJasa($row);
+            $result[] = $barangJasa;
+        }
+
+        return $result;
+    }
+
+    function updateStok(string $kode, int $qty): void
+    {
+        $statement = $this->connection->prepare("UPDATE barang_jasa SET stok = stok - ? WHERE kode = ?");
+        $statement->execute([$qty, $kode]);
+    }
 }

@@ -16,9 +16,9 @@ class UserRepositoryImpl implements UserRepository
 
     public function save(User $user): User
     {
-        $statement = $this->connection->prepare("INSERT INTO users(username, password) VALUES (?, ?)");
+        $statement = $this->connection->prepare("INSERT INTO users(username, password, role) VALUES (?, ?, ?)");
         $statement->execute([
-            $user->username, $user->password
+            $user->username, $user->password, $user->role
         ]);
         return $user;
     }

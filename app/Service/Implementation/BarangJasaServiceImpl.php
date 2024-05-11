@@ -110,4 +110,9 @@ class BarangJasaServiceImpl implements BarangJasaService
             throw $exception;
         }
     }
+
+    function getAll(): array
+    {
+        return $this->barangJasaRepository->getAll();
+    }
 }

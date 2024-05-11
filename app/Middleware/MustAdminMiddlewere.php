@@ -9,7 +9,7 @@ use Saep\Percetakan\Repository\Implementation\UserRepositoryImpl;
 use Saep\Percetakan\Service\Implementation\SessionServiceImpl;
 use Saep\Percetakan\Service\SessionService;
 
-class MustNotLoginMiddleware implements Middleware
+class MustAdminMiddlewere
 {
     private SessionService $sessionService;
 
@@ -24,7 +24,9 @@ class MustNotLoginMiddleware implements Middleware
     {
         $user = $this->sessionService->current();
         if ($user != null) {
-            View::redirect('/');
+            if ($user->role != "admin") {
+                View::redirect('/');
+            }
         }
     }
 }

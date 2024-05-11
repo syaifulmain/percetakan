@@ -17,4 +17,8 @@ interface BarangJasaRepository
     function findAll(int $page, string $jenis): array;
 
     function delete(string $kode): void;
+
+    function getAll(): array;
+
+    function updateStok(string $kode, int $qty): void;
 }

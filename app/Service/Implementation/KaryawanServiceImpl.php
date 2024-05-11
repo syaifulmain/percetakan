@@ -34,6 +34,7 @@ class KaryawanServiceImpl implements KaryawanService
             $user = new User();
             $user->username = $request->username;
             $user->password = $request->username;
+            $user->role = "karyawan";
 
             $this->userRepository->save($user);
 
@@ -83,7 +84,7 @@ class KaryawanServiceImpl implements KaryawanService
         }
     }
 
-    function delete(string $kode): bool
+    function delete(string $kode): void
     {
         try {
             Database::beginTransaction();

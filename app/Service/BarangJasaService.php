@@ -15,5 +15,7 @@ interface BarangJasaService
     function update(BarangJasaRequest $request): bool;
 
     function delete(string $kode): bool;
+
+    function getAll(): array;
 }
 
