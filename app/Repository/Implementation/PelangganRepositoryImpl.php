@@ -29,4 +29,12 @@ class PelangganRepositoryImpl implements PelangganRepository
         $result = $statement->fetch();
         return $result['id'];
     }
+
+    function getNamaByNoTransaksi(string $noTransaksi): string
+    {
+        $statement = $this->connection->prepare("SELECT pelanggan.nama FROM pelanggan JOIN pembelian ON pelanggan.id = pembelian.id_pelanggan WHERE pembelian.no_transaksi = ?");
+        $statement->execute([$noTransaksi]);
+        $result = $statement->fetch();
+        return $result['nama'];
+    }
 }

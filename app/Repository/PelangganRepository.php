@@ -10,4 +10,6 @@ interface PelangganRepository
    function save(Pelanggan $pelanggan): void;
 
    function getLastIdByNama(string $nama): int;
+
+   function getNamaByNoTransaksi(string $noTransaksi): string;
 }

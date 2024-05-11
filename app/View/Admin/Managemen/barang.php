@@ -18,7 +18,7 @@
                                tabindex="-1" role="button" aria-disabled="true" style="width: 160px;">Managemen</a>
                             <a href="../riwayat/pembelian" class="btn btn-outline-success fw-medium btn-lg"
                                tabindex="-1" role="button" aria-disabled="true" style="width: 160px;">Riwayat</a>
-                            <a href="../restok/" class="btn btn-outline-success fw-medium btn-lg"
+                            <a href="../restok/restok" class="btn btn-outline-success fw-medium btn-lg"
                                tabindex="-1" role="button" aria-disabled="true" style="width: 160px;">Restok</a>
                         </div>
                     </div>

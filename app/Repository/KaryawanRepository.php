@@ -20,4 +20,6 @@ interface KaryawanRepository
 
     function delete(string $username): void;
 
+    function getNamaByNoTransaksi(string $noTransaksi): string;
+
 }

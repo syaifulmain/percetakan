@@ -101,4 +101,12 @@ class KaryawanRepositoryImpl implements KaryawanRepository
         $statement = $this->connection->prepare("DELETE FROM karyawan WHERE username = ?");
         $statement->execute([$username]);
     }
+
+    function getNamaByNoTransaksi(string $noTransaksi): string
+    {
+        $statement = $this->connection->prepare("SELECT karyawan.nama FROM karyawan JOIN pembelian ON karyawan.username = pembelian.id_karyawan WHERE pembelian.no_transaksi = ?");
+        $statement->execute([$noTransaksi]);
+        $result = $statement->fetch();
+        return $result['nama'];
+    }
 }
