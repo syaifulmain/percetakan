@@ -16,8 +16,8 @@
                         <div class="d-grid gap-4 d-md-flex ">
                             <a href="./kasir" class="btn btn-outline-success fw-medium btn-lg active"
                                tabindex="-1" role="button" aria-disabled="true" style="width: 260px;">Kasir</a>
-                            <a href="./Riwayat" class="btn btn-outline-success fw-medium btn-lg"
-                               tabindex="-1" role="button" aria-disabled="true" style="width: 260px;">Riwayat</a>
+<!--                            <a href="./Riwayat" class="btn btn-outline-success fw-medium btn-lg"-->
+<!--                               tabindex="-1" role="button" aria-disabled="true" style="width: 260px;">Riwayat</a>-->
                         </div>
                     </div>
                     <div class="col justify-content-end d-md-flex">
@@ -204,8 +204,9 @@
     });
 
     $('#totalbayarfinal').on('change', function () {
+        let totalpembelian = 0;
         let totalbayar = $('#totalbayarfinal').val();
-        let totalpembelian = $('#totalpembelianfinal').val();
+        totalpembelian = $('#totalpembelianfinal').val();
         let kembalian = totalbayar - totalpembelian;
         if (kembalian < 0) {
             $('#totalkembalianfinal').val(0);
@@ -227,13 +228,10 @@
     });
 
     $('#selesaikan').on('click', function (e) {
-        let totalbayar = $('#totalbayarfinal').val();
-        let totalpembelian = $('#totalpembelianfinal').val();
-        if (totalbayar < totalpembelian) {
+        let kembalian = $('#totalkembalianfinal').val();
+        if (kembalian < 0) {
             e.preventDefault();
-            alert('Pembayaran tidak cukup');
-        } else{
-
+            alert('Cek kembali pembayaran');
         }
     });
 
@@ -268,7 +266,7 @@
 
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/dashboard/kasir/post",
+            url: "/dashboard/kasir/post",
             data: JSON.stringify(dataArray),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -283,8 +281,6 @@
 
     let cells = [];
 
-    // add row adn data to table after submit button clicked
-    // if same product already in table, update qty and total
     function addRow() {
         let kode = $('#select-state').val().split('/')[0];
         let nama = $('#nama').val();

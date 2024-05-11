@@ -29,14 +29,17 @@ Router::add('GET', '/dashboard/managemen/karyawan', \Saep\Percetakan\Controller\
 Router::add('POST', '/dashboard/managemen/karyawan', \Saep\Percetakan\Controller\Admin\ManagemenController::class, 'PUKaryawan', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
 Router::add('GET', '/dashboard/managemen/karyawan/delete', \Saep\Percetakan\Controller\Admin\ManagemenController::class, 'deleteKaryawan', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
 
-Router::add('GET', '/dashboard/riwayat/pembelian', \Saep\Percetakan\Controller\Admin\RIwayatController::class, 'pembelian', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
-Router::add('GET', '/dashboard/riwayat/mensuplai', \Saep\Percetakan\Controller\Admin\RIwayatController::class, 'mensuplai', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
+Router::add('GET', '/dashboard/riwayat/pembelian', \Saep\Percetakan\Controller\Admin\RiwayatController::class, 'pembelian', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
+Router::add('GET', '/dashboard/riwayat/mensuplai', \Saep\Percetakan\Controller\Admin\RiwayatController::class, 'mensuplai', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
 
-Router::add('GET', '/dashboard/riwayat/pembelian', \Saep\Percetakan\Controller\Admin\RIwayatController::class, 'pembelian', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
-Router::add('GET', '/dashboard/riwayat/pembelian/get', \Saep\Percetakan\Controller\Admin\RIwayatController::class, 'getDetailBarangJasa', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
-Router::add('GET', '/dashboard/riwayat/pembelian/delete', \Saep\Percetakan\Controller\Admin\RIwayatController::class, 'deletePembelian', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
+Router::add('GET', '/dashboard/riwayat/mensuplai/delete', \Saep\Percetakan\Controller\Admin\RiwayatController::class, 'deleteSupplier', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
+
+Router::add('GET', '/dashboard/riwayat/pembelian', \Saep\Percetakan\Controller\Admin\RiwayatController::class, 'pembelian', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
+Router::add('GET', '/dashboard/riwayat/pembelian/get', \Saep\Percetakan\Controller\Admin\RiwayatController::class, 'getDetailBarangJasa', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
+Router::add('GET', '/dashboard/riwayat/pembelian/delete', \Saep\Percetakan\Controller\Admin\RiwayatController::class, 'deletePembelian', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
 
 Router::add('GET', '/dashboard/restok/restok', \Saep\Percetakan\Controller\Admin\RestokController::class, 'restok', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
+Router::add('POST', '/dashboard/restok/restok/post', \Saep\Percetakan\Controller\Admin\RestokController::class, 'restokPost', [MustLoginMiddleware::class, MustAdminMiddlewere::class]);
 
 // karyawan
 Router::add('GET', '/dashboard/kasir', \Saep\Percetakan\Controller\Karyawan\KasirController::class, 'kasir', [MustLoginMiddleware::class]);

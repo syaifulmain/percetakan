@@ -71,7 +71,7 @@
                                 <td>
                                     <button type="button" class="btn btn-primary fw-medium btn-sm"
                                             data-bs-toggle="modal" data-bs-target="#CRUD"
-                                            onclick="displayCRUDButton('Jasa', 'Edit', '<?php echo $barang->kode ?>', '<?php echo $barang->nama ?>', '<?php echo $barang->harga ?>', '<?php echo $barang->stok ?>')">
+                                            onclick="displayCRUDButton('Jasa', 'Edit', '<?php echo $barang->kode ?>', '<?php echo $barang->nama ?>', '<?php echo $barang->stok ?>', '<?php echo $barang->harga ?>')">
                                         Edit
                                     </button>
                                 </td>

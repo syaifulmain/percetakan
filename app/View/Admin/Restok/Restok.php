@@ -32,27 +32,30 @@
                 <div class="col-auto">
                     <div class="row gap-2">
                         <div class="col gap-3 d-flex flex-column">
-                            <div class="form-floating">
-                                <input name="supplier" type="text" class="form-control" id="supplier"
-                                       placeholder="Masukan Nama" value="Guest">
-                                <label for="supplier">Supplier</label>
+                            <div class="row">
+                                <div class="col">
+
+                                    <div class="form-floating">
+                                        <input name="notransaksi" type="text" class="form-control" id="notransaksi"
+                                               placeholder="Masukan Nama" disabled>
+                                        <label for="notransaksi">No Transaksi</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+
+                                    <div class="form-floating">
+                                        <input name="tanggal" type="text" class="form-control" id="tanggal"
+                                               placeholder="Masukan Nama" disabled>
+                                        <label for="tanggal">Tanggal</label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-floating">
-                                <input name="notelp" type="text" class="form-control" id="notelp"
-                                       placeholder="Masukan Nama" value="+62">
-                                <label for="notelp">No Telepon</label>
-                            </div>
-                        </div>
-                        <div class="col gap-3 d-flex flex-column">
-                            <div class="form-floating">
-                                <input name="notransaksi" type="text" class="form-control" id="notransaksi"
-                                       placeholder="Masukan Nama" disabled>
-                                <label for="notransaksi">No Transaksi</label>
-                            </div>
-                            <div class="form-floating">
-                                <input name="tanggal" type="text" class="form-control" id="tanggal"
-                                       placeholder="Masukan Nama" disabled>
-                                <label for="tanggal">Tanggal</label>
+                            <div class="col gap-3 d-flex flex-column">
+                                <div class="form-floating">
+                                    <input name="supplier" type="text" class="form-control" id="supplier"
+                                           placeholder="Masukan Nama" value="Guest">
+                                    <label for="supplier">Supplier</label>
+                                </div>
                             </div>
                         </div>
                         <div class="col-5 bg-success d-flex me-2 ms-2">
@@ -77,10 +80,11 @@
                             <div class="col">
                                 <select id="select-state" placeholder="Cari Barang" class="my-form-control">
                                     <option value="">Select a state...</option>
-                                    <option value="K0001 Bolpen" id="Bolpen">K0001/Bolpen</option>
-                                    <option value="K0002 Pensil" id="Pensil">K0002/Pensil</option>
-                                    <option value="K0003 Penghapus" id="Penghapus">K0003/Penghapus</option>
-                                    <option value="K0004 Penggaris" id="Penggaris">K0004/Penggaris</option>
+                                    <?php foreach ($model['list'] as $barang) { ?>
+                                        <option value="<?php echo $barang->kode . '/' . $barang->nama?>">
+                                            <?php echo $barang->kode . '/' . $barang->nama ?>
+                                        </option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -123,8 +127,9 @@
                             <thead>
                             <tr>
                                 <th scope="col" class="bg-success text-white fw-medium col-1">No</th>
-                                <th scope="col" class="bg-success text-white fw-medium col-4">Nama</th>
-                                <th scope="col" class="bg-success text-white fw-medium col-3">Harga</th>
+                                <th scope="col" class="bg-success text-white fw-medium col-3">Supplier</th>
+                                <th scope="col" class="bg-success text-white fw-medium col-3">Nama</th>
+                                <th scope="col" class="bg-success text-white fw-medium col-2">Harga</th>
                                 <th scope="col" class="bg-success text-white fw-medium col-1">Qty</th>
                                 <th scope="col" class="bg-success text-white fw-medium col-3">Total</th>
                                 <th scope="col" class="bg-success text-white fw-medium col-1"></th>
@@ -142,27 +147,17 @@
 <script>
     $('#select-state').selectize({
         onChange: function (value) {
-            let data = value.split(' ');
+            let data = value.split('/');
             $('#nama').val(data[1]);
         }
     });
 
-    $('#totalbayarfinal').on('change', function () {
-        let totalbayar = $('#totalbayarfinal').val();
-        let totalpembelian = $('#totalpembelianfinal').val();
-        let kembalian = totalbayar - totalpembelian;
-        if (kembalian < 0) {
-            $('#totalkembalianfinal').val(0);
-        } else {
-            $('#totalkembalianfinal').val(kembalian);
-        }
-    });
-
     $('#submit').on('click', function (e) {
+        let supplier = $('#supplier').val();
         let nama = $('#nama').val();
         let harga = $('#harga').val();
         let qty = $('#jumlah').val();
-        if (nama === '' || harga === '' || qty === '') {
+        if (nama === '' || harga === '' || qty === '' || supplier === '') {
             e.preventDefault();
             alert('Data tidak lengkap');
         } else {
@@ -170,18 +165,38 @@
         }
     });
 
+    let tanggal;
+
     $(document).ready(function () {
         let date = new Date();
         let notransaksi = date.getTime();
-        let tanggal = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        tanggal = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         $('#notransaksi').val(notransaksi);
         $('#tanggal').val(tanggal);
     });
 
     let tableDataArray = []; // kode, nama, harga, qty
+
+    $('#checkoutbutton').on('click', function () {
+        $.ajax({
+            url: '/dashboard/restok/restok/post',
+            type: 'POST',
+            data: JSON.stringify(tableDataArray),
+            contentType: 'application/json',
+            success: function (data) {
+                alert('Berhasil');
+            },
+            error: function (data) {
+                alert('Gagal');
+            }
+        });
+        location.reload();
+    });
+
     let cells = [];
 
     function addRow() {
+        let supplier = $('#supplier').val();
         let nama = $('#nama').val();
         let harga = $('#harga').val();
         let qty = $('#jumlah').val();
@@ -190,11 +205,11 @@
         let rows = table.rows;
         let isExist = false;
         for (let i = 1; i < rows.length; i++) {
-            if (rows[i].cells[1].innerText === nama) {
+            if (rows[i].cells[1].innerText === supplier && rows[i].cells[2].innerText === nama) {
                 let currentQty = parseInt(rows[i].cells[3].innerText);
                 let newQty = currentQty + parseInt(qty);
-                rows[i].cells[3].innerText = newQty;
-                rows[i].cells[4].innerText = harga * newQty;
+                rows[i].cells[4].innerText = newQty;
+                rows[i].cells[5].innerText = harga * newQty;
                 tableDataArray[i - 1].qty = newQty;
                 tableDataArray[i - 1].total = harga * newQty;
                 isExist = true;
@@ -202,36 +217,37 @@
             }
         }
         if (!isExist) {
-            tableDataArray.push({nama: nama, harga: parseInt(harga), qty: parseInt(qty), total: total});
+            tableDataArray.push({tanggal: tanggal, supplier: supplier,nama: nama, harga: parseInt(harga), qty: parseInt(qty), total: total});
             let row = table.insertRow(-1);
             cells = [];
-            for (let j = 0; j < 6; j++) {
+            for (let j = 0; j < 7; j++) {
                 cells.push(row.insertCell(j));
             }
             cells[0].innerText = rows.length - 1;
-            cells[1].innerText = nama;
-            cells[2].innerText = harga;
-            cells[3].innerText = qty;
-            cells[4].innerText = total;
-            cells[5].innerHTML = '<button type="button" class="btn btn-danger fw-medium btn-sm" onclick="deleteRow(this)">Hapus</button>';
+            cells[1].innerText = supplier;
+            cells[2].innerText = nama;
+            cells[3].innerText = harga;
+            cells[4].innerText = qty;
+            cells[5].innerText = total;
+            cells[6].innerHTML = '<button type="button" class="btn btn-danger fw-medium btn-sm" onclick="deleteRow(this)">Hapus</button>';
         }
     }
 
-    //laod data table with tableDataArray
     function loadData() {
         let table = document.querySelector('table');
         for (let i = 0; i < tableDataArray.length; i++) {
             let row = table.insertRow(-1);
             let cells = [];
-            for (let j = 0; j < 6; j++) {
+            for (let j = 0; j < 7; j++) {
                 cells.push(row.insertCell(j));
             }
             cells[0].innerText = i + 1;
-            cells[1].innerText = tableDataArray[i].nama;
-            cells[2].innerText = tableDataArray[i].harga;
-            cells[3].innerText = tableDataArray[i].qty;
-            cells[4].innerText = tableDataArray[i].total;
-            cells[5].innerHTML = '<button type="button" class="btn btn-danger fw-medium btn-sm" onclick="deleteRow(this)">Hapus</button>';
+            cells[1].innerText = tableDataArray[i].supplier;
+            cells[2].innerText = tableDataArray[i].nama;
+            cells[3].innerText = tableDataArray[i].harga;
+            cells[4].innerText = tableDataArray[i].qty;
+            cells[5].innerText = tableDataArray[i].total;
+            cells[6].innerHTML = '<button type="button" class="btn btn-danger fw-medium btn-sm" onclick="deleteRow(this)">Hapus</button>';
         }
     }
 
@@ -266,6 +282,7 @@
     }
 
     function resetInput() {
+        $('#supplier').val('');
         $('#select-state')[0].selectize.clear();
         $('#nama').val('');
         $('#harga').val('');

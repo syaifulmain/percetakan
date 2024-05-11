@@ -12,18 +12,23 @@ use Saep\Percetakan\Repository\Implementation\KaryawanRepositoryImpl;
 use Saep\Percetakan\Repository\Implementation\PelangganRepositoryImpl;
 use Saep\Percetakan\Repository\Implementation\PembelianRepositoryImpl;
 use Saep\Percetakan\Repository\Implementation\SessionRepositoryImpl;
+use Saep\Percetakan\Repository\Implementation\SupplierRepositoryImpl;
 use Saep\Percetakan\Repository\Implementation\UserRepositoryImpl;
 use Saep\Percetakan\Service\Implementation\RiwayatServiceImpl;
 use Saep\Percetakan\Service\Implementation\SessionServiceImpl;
+use Saep\Percetakan\Service\Implementation\SupplierServiceImpl;
 use Saep\Percetakan\Service\Implementation\UserServiceImpl;
 use Saep\Percetakan\Service\KaryawanService;
 use Saep\Percetakan\Service\RiwayatService;
+use Saep\Percetakan\Service\SupplierService;
 use Saep\Percetakan\Service\UserService;
 
-class RIwayatController
+class RiwayatController
 {
     private RiwayatService $riwayatService;
     private UserService $userService;
+
+    private SupplierService $supplierService;
     public function __construct()
     {
         $connection = Database::getConnection();
@@ -44,6 +49,9 @@ class RIwayatController
             $pelangganRepository,
             $barangJasaRepository
         );
+
+        $supplierRepository = new SupplierRepositoryImpl($connection);
+        $this->supplierService = new SupplierServiceImpl($supplierRepository);
     }
 
 
@@ -57,7 +65,16 @@ class RIwayatController
 
     function mensuplai()
     {
-        View::render("Admin/Riwayat/mensuplai", []);
+        View::render("Admin/Riwayat/mensuplai", [
+            'list' => $this->supplierService->findAll(),
+            'infoUser' => $this->userService->getUserInformation()
+        ]);
+    }
+
+    function deleteSupplier()
+    {
+        $id = $_GET['id'];
+        $this->supplierService->delete($id);
     }
 
     function getDetailBarangJasa()

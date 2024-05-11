@@ -111,4 +111,24 @@ class BarangJasaRepositoryImpl implements BarangJasaRepository
         $statement = $this->connection->prepare("UPDATE barang_jasa SET stok = stok - ? WHERE kode = ?");
         $statement->execute([$qty, $kode]);
     }
+
+    function updateStokByNama(string $nama, int $qty): void
+    {
+        $statement = $this->connection->prepare("UPDATE barang_jasa SET stok = stok + ? WHERE nama = ?");
+        $statement->execute([$qty, $nama]);
+    }
+
+    function trulyGetAll(): array
+    {
+        $statement = $this->connection->prepare("SELECT * FROM barang_jasa");
+        $statement->execute();
+
+        $result = [];
+        while ($row = $statement->fetch()) {
+            $barangJasa = $this->getBarangJasa($row);
+            $result[] = $barangJasa;
+        }
+
+        return $result;
+    }
 }

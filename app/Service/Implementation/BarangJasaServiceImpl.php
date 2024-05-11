@@ -115,4 +115,9 @@ class BarangJasaServiceImpl implements BarangJasaService
     {
         return $this->barangJasaRepository->getAll();
     }
+
+    function trulyGetAll(): array
+    {
+        return $this->barangJasaRepository->trulyGetAll();
+    }
 }

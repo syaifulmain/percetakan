@@ -18,7 +18,7 @@
                                tabindex="-1" role="button" aria-disabled="true" style="width: 160px;">Managemen</a>
                             <a href="../riwayat/pembelian" class="btn btn-outline-success fw-medium btn-lg active"
                                tabindex="-1" role="button" aria-disabled="true" style="width: 160px;">Riwayat</a>
-                            <a href="../restok/" class="btn btn-outline-success fw-medium btn-lg"
+                            <a href="../restok/restok" class="btn btn-outline-success fw-medium btn-lg"
                                tabindex="-1" role="button" aria-disabled="true" style="width: 160px;">Restok</a>
                         </div>
                     </div>
@@ -39,45 +39,53 @@
                         </div>
                     </div>
                 </div>
-                <div class="col flex-fill">
-                    <table class="table table-striped table-hovers table-bordered">
-                        <thead>
-                        <tr>
-                            <th scope="col" class="bg-success text-white fw-medium col-1">No</th>
-                            <th scope="col" class="bg-success text-white fw-medium col-3">No Transaksi</th>
-                            <th scope="col" class="bg-success text-white fw-medium col-3">Supplier</th>
-                            <th scope="col" class="bg-success text-white fw-medium col-2">tanggal</th>
-                            <th scope="col" class="bg-success text-white fw-medium col-1">Produk</th>
-                            <th scope="col" class="bg-success text-white fw-medium col-2">Total</th>
-                            <th scope="col" class="bg-success text-white fw-medium col-1"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>123456</td>
-                            <td>Admin</td>
-                            <td>12-12-2021</td>
-                            <td>2</td>
-                            <td>20000</td>
-                            <td>
-                                <button type="button" class="btn btn-warning fw-medium btn-sm text-white">Cek</button>
-                            </td>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="justify-content-around w-100 d-md-flex">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination m-0">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
+                <div class="col text-success d-flex flex-column flex-fill">
+                    <div class="col border border-1">
+                        <table class="table table-striped table-hovers table-bordered  table-wrapper-riwayat m-0">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="bg-success text-white fw-medium col-1">No</th>
+                                <th scope="col" class="bg-success text-white fw-medium col-3">Supplier</th>
+                                <th scope="col" class="bg-success text-white fw-medium col-3">Nama</th>
+                                <th scope="col" class="bg-success text-white fw-medium col-2">Harga</th>
+                                <th scope="col" class="bg-success text-white fw-medium col-1">Qty</th>
+                                <th scope="col" class="bg-success text-white fw-medium col-3">Total</th>
+                                <th scope="col" class="bg-success text-white fw-medium col-1"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            $no = 1;
+                            foreach ($model['list'] as $supplier) {
+                                ?>
+                                <tr>
+                                    <td><?php echo $no++ ?></td>
+                                    <td><?php echo $supplier['supplier'] ?></td>
+                                    <td><?php echo $supplier['barang'] ?></td>
+                                    <td><?php echo $supplier['harga'] ?></td>
+                                    <td><?php echo $supplier['stok'] ?></td>
+                                    <td><?php echo $supplier['tanggal'] ?></td>
+                                    <td>
+                                        <button class="btn btn-danger" onclick="deletePembelian('<?php echo $supplier['id'] ?>')">Delete</button>
+                                    </td>
+                                </tr>
+                            <?php }?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function deletePembelian(id) {
+        fetch(`/dashboard/riwayat/mensuplai/delete?id=${id}`)
+            .then(response => {
+                if (response.status === 200) {
+                    window.location.reload();
+                }
+            })
+    }
+</script>

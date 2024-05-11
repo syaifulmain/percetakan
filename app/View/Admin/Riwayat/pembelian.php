@@ -32,7 +32,7 @@
                 <div class="mb-4">
                     <div class="row">
                         <div class="btn-group btn-group-lg d-grid d-md-flex mb-2">
-                            <a href="penjualan" class="btn btn-outline-success fw-medium btn-lg active"
+                            <a href="pembelian" class="btn btn-outline-success fw-medium btn-lg active"
                                tabindex="-1" role="button" aria-disabled="true">Penjualan</a>
                             <a href="mensuplai" class="btn btn-outline-success fw-medium btn-lg"
                                tabindex="-1" role="button" aria-disabled="true">Mensuplai</a>
@@ -95,8 +95,6 @@
 
     let detailpesanan;
 
-
-    // make wait for the data to be fetched
     function getDetail(noTransaksi, kasir, tanggal, totalBarang, totalPembelian) {
         document.getElementById('detailpesanan').getElementsByTagName('tbody')[0].innerHTML = '';
         document.getElementById('kasir').value = kasir;
@@ -192,7 +190,7 @@
                             <div class="col">
                                 <div class="col bg-success p-3 rounded">
                                     <h4>Total Pembelian</h4>
-                                    <h3 id="totalpembelian"><span>Rp. </span>200000</h3>
+                                    <h3>Rp. <span id="totalpembelian">200000</span></h3>
                                 </div>
                             </div>
                         </div>

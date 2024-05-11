@@ -20,5 +20,9 @@ interface BarangJasaRepository
 
     function getAll(): array;
 
+    function trulyGetAll(): array;
+
     function updateStok(string $kode, int $qty): void;
+
+    function updateStokByNama(string $nama, int $qty): void;
 }

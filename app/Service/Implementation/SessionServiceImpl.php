@@ -40,6 +40,8 @@ class SessionServiceImpl implements SessionService
         $sessionId = $_COOKIE[self::$COOKIE_NAME] ?? '';
         $this->sessionRepository->deleteById($sessionId);
 
+        $this->sessionRepository->deleteAll(); // <-- raja iblis
+
         setcookie(self::$COOKIE_NAME, '', 1, "/");
     }
 
